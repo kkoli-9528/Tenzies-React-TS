@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {generateNewDice, winCondition} from './utils/index';
-import type { Die } from "./types/types";
+import type { Die, gameSession } from "./types/types";
 import DieComponent from "./components/DieComponent";
 import GameButton from "./components/GameButton";
 import Confetti from 'react-confetti';
@@ -8,6 +8,19 @@ import Confetti from 'react-confetti';
 function App(): React.JSX.Element {
   const [die, setDie] = useState<Die[]>(generateNewDice);
   const winConditionVal: boolean = winCondition(die)
+
+  useEffect(() => {
+    if(winConditionVal){
+      const session: gameSession = {
+        rolls: 12,
+        duration: 10,
+        won: true,
+        date: new Date()
+      }
+    console.log(session)
+    }
+  }, [winConditionVal])
+
 
   return (
     <div className="font-inter">

@@ -5,3 +5,10 @@ export interface Die {
   value: number
   isHeld: boolean
 }
+
+export interface gameSession {
+  rolls: number
+  duration: number
+  won: boolean
+  date: Date
+}
