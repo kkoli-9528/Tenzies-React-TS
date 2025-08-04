@@ -1,0 +1,12 @@
+# Ignore global node_modules
+**/node_modules/
+
+# Ignore global dist output
+**/dist/
+
+# Ignore logs
+**/*.log
+**/logs/
+
+# Ignore env files
+**/.env

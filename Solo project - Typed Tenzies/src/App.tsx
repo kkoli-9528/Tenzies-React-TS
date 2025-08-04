@@ -8,16 +8,27 @@ import Confetti from 'react-confetti';
 function App(): React.JSX.Element {
   const [die, setDie] = useState<Die[]>(generateNewDice);
   const winConditionVal: boolean = winCondition(die)
+  const [rolls, setRolls] = useState<number>(0)
+  const [startTime, setStartTime] = useState<number>(Date.now())
 
   useEffect(() => {
     if(winConditionVal){
       const session: gameSession = {
-        rolls: 12,
-        duration: 10,
+        rolls,
+        duration: Math.floor((Date.now() - startTime) / 1000),
         won: true,
         date: new Date()
       }
-    console.log(session)
+    
+      fetch('http://localhost:5000/api/games', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(session)
+      }).then(res => {
+        if(!res.ok) throw new Error('Failed to save session')
+        return res.json()
+      }).then(console.log)
+      .catch(console.error)
     }
   }, [winConditionVal])
 
