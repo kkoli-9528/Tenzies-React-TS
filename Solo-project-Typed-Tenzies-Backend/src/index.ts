@@ -11,7 +11,7 @@ app.use(cors())
 
 app.get('/', (_: Request, res: Response) => res.send('API Running'))
 
-const PORT: string | 5000 = process.env.PORT || 5000
+const PORT: number = parseInt(process.env.PORT || '5000', 10)
 
 connectDB()
 
