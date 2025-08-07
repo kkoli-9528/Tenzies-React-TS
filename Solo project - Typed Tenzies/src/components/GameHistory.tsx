@@ -1,15 +1,30 @@
 import { useEffect, useState } from 'react'
 import type { gameSession } from '../types/types'
+import toast from 'react-hot-toast';
 
 const GameHistory = () => {
   const [sessions, setSessions] = useState<gameSession[]>([])
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    fetch('http://localhost:5000/api/games')
-      .then(res => res.json())
-      .then(data => setSessions(data))
-      .catch(console.error)
-  }, [])
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  fetch('http://localhost:5000/api/games', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to fetch sessions");
+      return res.json();
+    })
+    .then(data => setSessions(data))
+    .catch(err => {
+      console.error("Fetch error:", err);
+      toast.error("Failed to load your game history");
+    });
+}, []);
 
   return (
     <div className="mt-10 w-full max-w-md text-left">
